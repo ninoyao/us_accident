@@ -59,7 +59,7 @@ CREATE TABLE master_table(
 `Astronomical_Twilight` VARCHAR(6)
 );
 
-LOAD DATA INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/US_Accidents_Dec19.csv'
+LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\US_Accidents_Dec19.csv'
 INTO TABLE master_table
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 

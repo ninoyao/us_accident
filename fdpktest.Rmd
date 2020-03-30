@@ -39,7 +39,7 @@ df_we <- df_sub %>% select(Airport_Code, Weather_Timestamp ,"Temperature(F)","Wi
 
 dim(unique(df_we))
 dim(unique(df_we[,1:2]))
-
+df
 # Airport_Code, Weather_Timestamp can be the prime key for the Weather table
 
 # zipcode ~ airport code
@@ -48,5 +48,11 @@ zipair <- df_sub %>% select(Airport_Code,Zipcode)
 dim(unique(zipair))
 dim(unique(zipair[,2]))
 #airport code is relied on zip
+
+#4 
+df_sunli <- df_sub %>% select(Airport_Code, Weather_Timestamp, Sunrise_Sunset)
+dim(unique(df_sunli))
+dim(unique(unique(df_sunli[,1:2])))
+summary(df_sunli)
 ```
 
