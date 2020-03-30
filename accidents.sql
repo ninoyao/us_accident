@@ -7,20 +7,21 @@ USE accidents;
 #before loading database go preferences -> SQL Editor and change DBMS connection read time out (in seconds): 300
 # https://jeffreyeverhart.com/2017/11/04/mysql-workbench-error-code-2013-lost-connection-mysql-server-query/
 
+
 CREATE TABLE master_table(
 `ID` VARCHAR(50) PRIMARY KEY,
 `Source` VARCHAR(20),
-`TMC` VARCHAR(10) , #SHOULD BE A NUMBER
+`TMC` INT NULL , #SHOULD BE A NUMBER
 `Severity` INT(2),
 `Start_Time` DATETIME,
 `End_Time` DATETIME,
 `Start_Lat` DECIMAL(10,6) ,
 `Start_Lng` DECIMAL(10,6) ,
-`End_Lat` VARCHAR(120) ,
-`End_Lng` VARCHAR(120) ,
+`End_Lat` DECIMAL(10,6) NULL,
+`End_Lng` DECIMAL(10,6) NULL,
 `Distance(mi)` DECIMAL (8,2) ,
 `Description` BLOB,
-`Number` VARCHAR(10), #SHOULD BE A NUMBER 
+`Number` INT NULL , #SHOULD BE A NUMBER 
 `Street` VARCHAR(120),
 `Side` VARCHAR(2),
 `City` VARCHAR(50),
@@ -30,36 +31,38 @@ CREATE TABLE master_table(
 `Country` VARCHAR(2),
 `Timezone` VARCHAR(20),
 `Airport_Code` VARCHAR(6),
-`Weather_Timestamp` VARCHAR(20),#SHOULD BE A DATETIME
-`Temperature(F)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Wind_Chill(F)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Humidity(%)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Pressure(in)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Visibility(mi)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Wind_Direction` VARCHAR(20),
-`Wind_Speed(mph)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Precipitation(in)` VARCHAR(10) , #SHOULD BE A NUMBER
-`Weather_Condition` VARCHAR(50),
-`Amenity` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Bump` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Crossing` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Give_Way` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Junction` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`No_Exit` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Railway` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Roundabout` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Station` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Stop` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Traffic_Calming` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Traffic_Signal` VARCHAR(10) , #SHOULD BE A BOOL VALUE
-`Turning_Loop` VARCHAR(10) , #SHOULD BE A BOOL VALUE
+`Weather_Timestamp` DATETIME NULL,#SHOULD BE A DATETIME
+`Temperature(F)` DECIMAL(4,2) NULL, #SHOULD BE A NUMBER
+`Wind_Chill(F)` DECIMAL(4,2) NULL , #SHOULD BE A NUMBER
+`Humidity(%)` DECIMAL(5,2) NULL  , #SHOULD BE A NUMBER
+`Pressure(in)` DECIMAL(4,2) NULL  , #SHOULD BE A NUMBER
+`Visibility(mi)` DECIMAL(4,2) NULL  , #SHOULD BE A NUMBER
+`Wind_Direction` VARCHAR(20) NULL,
+`Wind_Speed(mph)` DECIMAL(4,2) NULL , #SHOULD BE A NUMBER
+`Precipitation(in)` DECIMAL(4,2) NULL  , #SHOULD BE A NUMBER
+`Weather_Condition` VARCHAR(50) NULL,
+`Amenity` SET('True', 'False') , #SHOULD BE A BOOL VALUE
+`Bump` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Crossing` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Give_Way` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Junction` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`No_Exit` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Railway` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Roundabout` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Station` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Stop` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Traffic_Calming` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Traffic_Signal` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
+`Turning_Loop` SET('True', 'False')  , #SHOULD BE A BOOL VALUE
 `Sunrise_Sunset` VARCHAR(6),
 `Civil_Twilight` VARCHAR(6),
 `Nautical_Twilight` VARCHAR(6),
 `Astronomical_Twilight` VARCHAR(6)
 );
 
-LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\US_Accidents_Dec19.csv'
+
+#LOAD DATA LOCAL INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\US_Accidents_Dec19.csv'
+LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/US_Accidents_Dec19.csv'
 INTO TABLE master_table
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
