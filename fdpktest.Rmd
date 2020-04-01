@@ -7,14 +7,18 @@ output: html_notebook
 library(tidyverse)
 library(readr)
 library(vroom)
-df <- read_csv('US_Accidents_Dec19.csv')
+setwd("C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms")
+df <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/US_Accidents_Dec19.csv')
+head(df_new)
+df_new <- replace_na(df,expand.grid(names(df),"/N"))
 
-names(df)
+write.csv(df, "accident_na.csv", na = "\\N")
 # subsetting for easier use
 
-df_sub <- df[1:50000,]
+test <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/us_accident/accident_na.csv')
+df_sub <- df[1:500,]
 # prime key test 
-
+test[1271,]
 # 1
 df_sss <- df_sub %>% select(Start_Time, Start_Lat, Start_Lng)
 
