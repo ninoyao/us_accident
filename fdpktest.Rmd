@@ -9,16 +9,25 @@ library(readr)
 library(vroom)
 setwd("C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms")
 df <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/US_Accidents_Dec19.csv')
-head(df_new)
+
+#summary(df)
+
+df_sub1 <- select(df,-c(End_Lat,End_Lng,`Precipitation(in)`,`Wind_Chill(F)`))
+
+df_nona <- na.omit(df_sub1)
+
+write.csv(df_nona, "accident_0402.csv", na = "\\N")
+
 df_new <- replace_na(df,expand.grid(names(df),"/N"))
 
-write.csv(df, "accident_na.csv", na = "\\N")
+
+#write.csv(df, "accident_na.csv", na = "\\N")
 # subsetting for easier use
 
-test <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/us_accident/accident_na.csv')
-df_sub <- df[1:500,]
-# prime key test 
-test[1271,]
+#test <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/us_accident/accident_0402.csv')
+
+df_sub <- df_nona[1:50000,]
+
 # 1
 df_sss <- df_sub %>% select(Start_Time, Start_Lat, Start_Lng)
 
@@ -37,13 +46,13 @@ dim(unique(df_poi[,1:2]))
 
 # 3
 
-df_we <- df_sub %>% select(Airport_Code, Weather_Timestamp ,"Temperature(F)","Wind_Chill(F)"    ,     "Humidity(%)"          
+df_we <- df_sub %>% select(Airport_Code, Weather_Timestamp ,"Temperature(F)"   ,     "Humidity(%)"          
 , "Pressure(in)"          ,"Visibility(mi)"       
-, "Wind_Direction"       , "Wind_Speed(mph)"      ,"Precipitation(in)"     ,"Weather_Condition")
+, "Wind_Direction"       , "Wind_Speed(mph)"      , "Weather_Condition")
 
 dim(unique(df_we))
 dim(unique(df_we[,1:2]))
-df
+
 # Airport_Code, Weather_Timestamp can be the prime key for the Weather table
 
 # zipcode ~ airport code
