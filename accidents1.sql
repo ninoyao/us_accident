@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS accidents;
+DROP DATABASE IF EXISTS accidents1;
 
-CREATE DATABASE accidents;
+CREATE DATABASE accidents1;
 
-USE accidents;
+USE accidents1;
 
 #before loading database go preferences -> SQL Editor and change DBMS connection read time out (in seconds): 300
 # https://jeffreyeverhart.com/2017/11/04/mysql-workbench-error-code-2013-lost-connection-mysql-server-query/
@@ -80,7 +80,7 @@ CREATE TABLE master_table(
 **/
 
 
-ALTER TABLE `accidents`.`master_table` 
+ALTER TABLE `accidents1`.`master_table` 
 ENGINE = InnoDB ;
 LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/accident_na.csv'
 
@@ -92,7 +92,7 @@ IGNORE 1 LINES;
 
 SELECT * FROM master_table LIMIT 1000;
 
-
+/**
 UPDATE master_table
 SET Amenity = CASE WHEN Amenity = 'False' THEN 0 ELSE 1 END;
 
@@ -132,6 +132,7 @@ SET Traffic_Signal = CASE WHEN Traffic_Signal = 'False' THEN 0 ELSE 1 END;
 UPDATE master_table
 SET Turning_Loop = CASE WHEN Turning_Loop = 'False' THEN 0 ELSE 1 END;
 
+**/
 
 /**
 ALTER TABLE master_table
@@ -181,7 +182,7 @@ INNER JOIN master_table m2
 WHERE
     m1.zipcode = m2.zipcode;
 **/
-SELECT zipcode FROM master_table LIMIT 100;
+
 
 -- -----------------------------------------------------
 -- Table new tables
@@ -194,12 +195,12 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 
 
 -- -----------------------------------------------------
--- Table `accidents`.`Location_zip`
+-- Table `accidents1`.`Location_zip`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents`.`Location_zip` ;
+DROP TABLE IF EXISTS `accidents1`.`Location_zip` ;
 
-CREATE TABLE IF NOT EXISTS `accidents`.`Location_zip` (
-  `zipcode` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `accidents1`.`Location_zip` (
+  `zipcode` BIGINT NOT NULL,
   `city` VARCHAR(45) NULL,
   `county` VARCHAR(45) NULL,
   `timezone` VARCHAR(45) NULL,
@@ -210,11 +211,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `accidents`.`Location_POI_start`
+-- Table `accidents1`.`Location_POI_start`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents`.`Location_POI_start` ;
+DROP TABLE IF EXISTS `accidents1`.`Location_POI_start` ;
 
-CREATE TABLE IF NOT EXISTS `accidents`.`Location_POI_start` (
+CREATE TABLE IF NOT EXISTS `accidents1`.`Location_POI_start` (
   `start_lat` DECIMAL(10,6) NOT NULL,
   `start_lng` DECIMAL(10,6) NOT NULL,
   `amenity` TINYINT(1) NULL,
@@ -245,11 +246,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `accidents`.`Enviornment`
+-- Table `accidents1`.`Enviornment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents`.`Enviornment` ;
+DROP TABLE IF EXISTS `accidents1`.`Enviornment` ;
 
-CREATE TABLE IF NOT EXISTS `accidents`.`Enviornment` (
+CREATE TABLE IF NOT EXISTS `accidents1`.`Enviornment` (
   `airport_code` VARCHAR(45) NOT NULL,
   `weather_timestamp` DATE NOT NULL,
   `temperature` DECIMAL(4,2) NULL,
@@ -268,11 +269,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `accidents`.`Location_POI_end`
+-- Table `accidents1`.`Location_POI_end`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents`.`Location_POI_end` ;
+DROP TABLE IF EXISTS `accidents1`.`Location_POI_end` ;
 
-CREATE TABLE IF NOT EXISTS `accidents`.`Location_POI_end` (
+CREATE TABLE IF NOT EXISTS `accidents1`.`Location_POI_end` (
   `end_lat` DECIMAL(10,6) NOT NULL,
   `end_lng` DECIMAL(10,6) NOT NULL,
   `amenity` TINYINT(1) NULL,
@@ -304,11 +305,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `accidents`.`Accidents`
+-- Table `accidents1`.`accidents1`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents`.`Accidents` ;
+DROP TABLE IF EXISTS `accidents1`.`accidents1` ;
 
-CREATE TABLE IF NOT EXISTS `accidents`.`Accidents` (
+CREATE TABLE IF NOT EXISTS `accidents1`.`accidents1` (
   `id` INT NOT NULL,
   `source` VARCHAR(45) NULL,
   `TMC` INT NULL,
@@ -327,20 +328,20 @@ CREATE TABLE IF NOT EXISTS `accidents`.`Accidents` (
   `civil_twilight` VARCHAR(45) NULL,
   `astronomical_twilight` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Accidents_Location_POI1_idx` (`start_lat` ASC, `start_lng` ASC),
-  INDEX `fk_Accidents_Location_POI_end1_idx` (`end_end_lat` ASC, `end_end_lng` ASC),
-  INDEX `fk_Accidents_Enviornment1_idx` (`airport_code` ASC, `weather_timestamp` ASC),
-  CONSTRAINT `fk_Accidents_Location_POI1`
+  INDEX `fk_accidents1_Location_POI1_idx` (`start_lat` ASC, `start_lng` ASC),
+  INDEX `fk_accidents1_Location_POI_end1_idx` (`end_end_lat` ASC, `end_end_lng` ASC),
+  INDEX `fk_accidents1_Enviornment1_idx` (`airport_code` ASC, `weather_timestamp` ASC),
+  CONSTRAINT `fk_accidents1_Location_POI1`
     FOREIGN KEY (`start_lat` , `start_lng`)
     REFERENCES `mydb`.`Location_POI_start` (`start_lat` , `start_lng`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Accidents_Location_POI_end1`
+  CONSTRAINT `fk_accidents1_Location_POI_end1`
     FOREIGN KEY (`end_end_lat` , `end_end_lng`)
     REFERENCES `mydb`.`Location_POI_end` (`end_lat` , `end_lng`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Accidents_Enviornment1`
+  CONSTRAINT `fk_accidents1_Enviornment1`
     FOREIGN KEY (`airport_code` , `weather_timestamp`)
     REFERENCES `mydb`.`Enviornment` (`airport_code` , `weather_timestamp`)
     ON DELETE NO ACTION
@@ -359,6 +360,17 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Inserting data into tables
 -- -----------------------------------------------------
 
+UPDATE master_table
+SET zipcode = LPAD(zipcode, 5,'-');
+
+SELECT DISTINCT(zipcode),
+				city,
+				county,
+				timezone,
+				airport_code
+FROM master_table WHERE zipcode IS NOT NULL;
+
+
 INSERT INTO Location_zip(
 				zipcode,
 				city,
@@ -366,12 +378,12 @@ INSERT INTO Location_zip(
 				timezone,
 				airport_code
 )
-SELECT zipcode,
+SELECT DISTINCT(zipcode),
 				city,
 				county,
 				timezone,
 				airport_code
-FROM master_table;
+FROM master_table WHERE zipcode IS NOT NULL;
 
 INSERT INTO Location_POI_start(
 				start_lat,
@@ -479,7 +491,7 @@ INSERT INTO Location_POI_end(
 FROM master_table;
 
 
-INSERT INTO Accidents(
+INSERT INTO accidents1(
 				id,
 				`source`,
 				TMC,
