@@ -15,7 +15,17 @@ df <- read_csv('C:/Users/ninoy/Desktop/VandyDS/2020spring/dbms/US_Accidents_Dec1
 df_sub1 <- select(df,-c(End_Lat,End_Lng,`Precipitation(in)`,`Wind_Chill(F)`))
 
 df_nona <- na.omit(df_sub1)
+df_zip <- df_nona %>% select(Zipcode,City,County,Timezone,Airport_Code)
+dim(unique(df_zip))
+dim(unique(df_zip[,1]))
 
+filter_zip <- unique(df_zip) %>% group_by(Zipcode) %>% summarise(num = n()) %>% arrange(-num) 
+# top 1343
+
+zip_filter <- filter_zip[-(1:1343),1]
+
+df_zipout <- df_nona %>% filter(Zipcode %in% zip_filter$Zipcode)
+write.csv(df_zipout, "accident_0402_v2.csv")
 
 #df_new <- replace_na(df,expand.grid(names(df),"/N"))
 
@@ -86,7 +96,7 @@ df_zip_after <- df_zipout %>% select(Zipcode,City,County,Timezone,Airport_Code)
 dim(unique(df_zip_after))
 dim(unique(df_zip_after[,1]))
 
-write.csv(df_zipout, "accident_0402_v2.csv")
+
 
 
 ```
