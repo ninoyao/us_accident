@@ -16,9 +16,8 @@ df_sub1 <- select(df,-c(End_Lat,End_Lng,`Precipitation(in)`,`Wind_Chill(F)`))
 
 df_nona <- na.omit(df_sub1)
 
-write.csv(df_nona, "accident_0402.csv", na = "\\N")
 
-df_new <- replace_na(df,expand.grid(names(df),"/N"))
+#df_new <- replace_na(df,expand.grid(names(df),"/N"))
 
 
 #write.csv(df, "accident_na.csv", na = "\\N")
@@ -36,7 +35,7 @@ dim(unique(df_sss))
 
 # 2 POI
 
-df_poi <- df_sub %>% select(Start_Lat, Start_Lng, Amenity, Bump, Crossing,  Give_Way , Junction  ,No_Exit , Railway ,Roundabout, Station, Stop, Traffic_Calming, Traffic_Signal, Turning_Loop)
+df_poi <- df_zipout %>% select(Start_Lat, Start_Lng, Amenity, Bump, Crossing,  Give_Way , Junction  ,No_Exit , Railway ,Roundabout, Station, Stop, Traffic_Calming, Traffic_Signal, Turning_Loop)
 
 dim(unique(df_poi)) 
 
@@ -46,12 +45,14 @@ dim(unique(df_poi[,1:2]))
 
 # 3
 
-df_we <- df_sub %>% select(Airport_Code, Weather_Timestamp ,"Temperature(F)"   ,     "Humidity(%)"          
+df_we <- df_zipout %>% select(Airport_Code, Weather_Timestamp ,"Temperature(F)"   ,     "Humidity(%)"          
 , "Pressure(in)"          ,"Visibility(mi)"       
 , "Wind_Direction"       , "Wind_Speed(mph)"      , "Weather_Condition")
 
 dim(unique(df_we))
 dim(unique(df_we[,1:2]))
+
+unique(df_we) %>% group_by(Airport_Code, Weather_Timestamp) %>%  summarise(num = n()) %>% arrange(-num) 
 
 # Airport_Code, Weather_Timestamp can be the prime key for the Weather table
 
@@ -67,5 +68,26 @@ df_sunli <- df_sub %>% select(Airport_Code, Weather_Timestamp, Sunrise_Sunset)
 dim(unique(df_sunli))
 dim(unique(unique(df_sunli[,1:2])))
 summary(df_sunli)
+
+#5 
+df_zip <- df_nona %>% select(Zipcode,City,County,Timezone,Airport_Code)
+dim(unique(df_zip))
+dim(unique(df_zip[,1]))
+
+filter_zip <- unique(df_zip) %>% group_by(Zipcode) %>% summarise(num = n()) %>% arrange(-num) 
+# top 1343
+
+zip_filter <- filter_zip[-(1:1343),1]
+
+df_zipout <- df_nona %>% filter(Zipcode %in% zip_filter$Zipcode)
+
+#6
+df_zip_after <- df_zipout %>% select(Zipcode,City,County,Timezone,Airport_Code)
+dim(unique(df_zip_after))
+dim(unique(df_zip_after[,1]))
+
+write.csv(df_zipout, "accident_0402_v2.csv")
+
+
 ```
 

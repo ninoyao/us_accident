@@ -82,9 +82,9 @@ CREATE TABLE master_table(
 
 ALTER TABLE `accidents2`.`master_table` 
 ENGINE = InnoDB ;
-LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/accident_0402.csv'
+#LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/accident_0402.csv'
 
-#LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\us_accident\\accident_na.csv'
+LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\us_accident\\accident_0402_v2.csv'
 INTO TABLE master_table
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
@@ -155,7 +155,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 DROP TABLE IF EXISTS `accidents2`.`Location_zip` ;
 
 CREATE TABLE IF NOT EXISTS `accidents2`.`Location_zip` (
-  `zipcode` INT NOT NULL,
+  `zipcode` VARCHAR(15) NOT NULL,
   `city` VARCHAR(45) NULL,
   `county` VARCHAR(45) NULL,
   `timezone` VARCHAR(45) NULL,
@@ -186,8 +186,8 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Location_POI_start` (
   `traffic_signal` TINYINT(1) NULL,
   `turning_loop` TINYINT(1) NULL,
   `number` INT NULL,
-  `street` VARCHAR(45) NULL,
-  `zipcode` INT NOT NULL,
+  `street` VARCHAR(120) NULL,
+  `zipcode` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`start_lat`, `start_lng`),
   INDEX `fk_POI_Location_zip_idx` (`zipcode` ASC),
   CONSTRAINT `fk_POI_Location_zip`
@@ -197,7 +197,6 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Location_POI_start` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `accidents2`.`Enviornment`
 -- -----------------------------------------------------
@@ -205,7 +204,7 @@ DROP TABLE IF EXISTS `accidents2`.`Enviornment` ;
 
 CREATE TABLE IF NOT EXISTS `accidents2`.`Enviornment` (
   `airport_code` VARCHAR(45) NOT NULL,
-  `weather_timestamp` DATE NOT NULL,
+  `weather_timestamp` DATETIME NOT NULL,
   `temperature` DECIMAL(5,2) NULL,
   `humidity` DECIMAL(5,2) NULL,
   `pressure` DECIMAL(5,2) NULL,
@@ -223,18 +222,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `accidents2`.`Accidents` ;
 
 CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
-  `id` INT NOT NULL,
-  `source` VARCHAR(45) NULL,
+  `id` VARCHAR(50) ,
+  `source` VARCHAR(20) NULL,
   `TMC` INT NULL,
   `severity` INT NULL,
-  `start_time` DATE NULL,
-  `end_time` DATE NULL,
+  `start_time` DATETIME NULL,
+  `end_time` DATETIME NULL,
   `start_lat` DECIMAL(10,6) NOT NULL,
   `start_lng` DECIMAL(10,6) NOT NULL,
-  `distance` DECIMAL(8,2) NULL,
-  `description` VARCHAR(45) NULL,
+  `distance` DECIMAL(10,2) NULL,
+  `Description` BLOB,
   `airport_code` VARCHAR(45) NOT NULL,
-  `weather_timestamp` DATE NULL,
+  `weather_timestamp` DATETIME NULL,
   `sunrise_sunset` VARCHAR(45) NULL,
   `civil_twilight` VARCHAR(45) NULL,
   `astronomical_twilight` VARCHAR(45) NULL,
@@ -254,37 +253,6 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `accidents2`.`Location_POI_end`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents2`.`Location_POI_end` ;
-
-CREATE TABLE IF NOT EXISTS `accidents2`.`Location_POI_end` (
-  `amenity` TINYINT(1) NULL,
-  `bump` TINYINT(1) NULL,
-  `crossing` TINYINT(1) NULL,
-  `give_way` TINYINT(1) NULL,
-  `junction` TINYINT(1) NULL,
-  `no_exit` TINYINT(1) NULL,
-  `railway` TINYINT(1) NULL,
-  `roundabou` TINYINT(1) NULL,
-  `station` TINYINT(1) NULL,
-  `stop` TINYINT(1) NULL,
-  `traffic_calming` TINYINT(1) NULL,
-  `traffic_signal` TINYINT(1) NULL,
-  `turning_loop` TINYINT(1) NULL,
-  `number` INT NULL,
-  `street` VARCHAR(45) NULL,
-  `zipcode` INT NOT NULL,
-  INDEX `fk_Location_POI_end_Location_zip1_idx` (`zipcode` ASC),
-  CONSTRAINT `fk_Location_POI_end_Location_zip1`
-    FOREIGN KEY (`zipcode`)
-    REFERENCES `accidents2`.`Location_zip` (`zipcode`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -296,15 +264,22 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Inserting data into tables
 -- -----------------------------------------------------
 
-UPDATE master_table
-SET zipcode = LPAD(zipcode, 5,'-');
+#UPDATE master_table
+#SET zipcode = LPAD(zipcode, 5,'-');
 
-SELECT DISTINCT(zipcode),
-				city,
-				county,
-				timezone,
-				airport_code
-FROM master_table WHERE zipcode IS NOT NULL;
+#SELECT  DISTINCT zipcode FROM master_table;
+
+#SELECT  count(DISTINCT zipcode,city,
+			#	county,
+			#	timezone,
+			#	airport_code) FROM master_table;
+
+#SELECT  DISTINCT (zipcode),
+#				city,
+#				county,
+#				timezone,
+#				airport_code
+#FROM master_table WHERE zipcode IS NOT NULL;
 
 
 INSERT INTO Location_zip(
@@ -314,6 +289,25 @@ INSERT INTO Location_zip(
 				timezone,
 				airport_code
 ) SELECT DISTINCT(zipcode), city, county, timezone, airport_code
+FROM master_table;
+
+SELECT DISTINCT start_lat, start_lng,
+				amenity,
+				bump,
+				crossing,
+				give_way,
+				junction,
+				no_exit,
+				railway,
+				roundabout,
+				station,
+				`stop`,
+				traffic_calming,
+				traffic_signal,
+				turning_loop,
+				`number`,
+				street,
+				zipcode
 FROM master_table;
 
 INSERT INTO Location_POI_start(
@@ -335,8 +329,7 @@ INSERT INTO Location_POI_start(
 				`number`,
 				street,
 				zipcode
-)SELECT start_lat,
-				start_lng,
+)SELECT DISTINCT start_lat, start_lng,
 				amenity,
 				bump,
 				crossing,
@@ -356,103 +349,59 @@ INSERT INTO Location_POI_start(
 FROM master_table;
 
 
-INSERT INTO Environment(
+INSERT INTO enviornment(
 				airport_code,
 				weather_timestamp,
 				temperature,
-				wind_chill,
 				humidity,
 				pressure,
 				visibility,
 				wind_direction,
 				wind_speed,
-				precipitation,
 				weather_condition
 )
-SELECT airport_code,
+SELECT 	DISTINCT airport_code,
 				weather_timestamp,
-				temperature,
-				wind_chill,
-				humidity,
-				pressure,
-				visibility,
+				`temperature(F)`,
+				`humidity(%)`,
+				`pressure(in)`,
+				`visibility(mi)`,
 				wind_direction,
-				wind_speed,
-				precipitation,
+				`wind_speed(mph)`,
 				weather_condition
 FROM master_table;
 
-INSERT INTO Location_POI_end(
-				end_lat,
-				end_lng,
-				amenity,
-				bump,
-				crossing,
-				give_way,
-				junction,
-				no_exit,
-				railway,
-				roundabout,
-				station,
-				`stop`,
-				traffic_calming,
-				traffic_signal,
-				turning_loop,
-				`number`,
-				street,
-				zipcode
-)SELECT end_lat,
-				end_lng,
-				amenity,
-				bump,
-				crossing,
-				give_way,
-				junction,
-				no_exit,
-				railway,
-				roundabout,
-				station,
-				`stop`,
-				traffic_calming,
-				traffic_signal,
-				turning_loop,
-				`number`,
-				street,
-				zipcode
-FROM master_table;
+INSERT INTO accidents(
+ `id`,
+  `source` ,
+  `TMC` ,
+  `severity` ,
+  `start_time` ,
+  `end_time` ,
+  `start_lat`,
+  `start_lng` ,
+  `distance` ,
+  `Description`,
+  `airport_code` ,
+  `weather_timestamp` ,
+  `sunrise_sunset`,
+  `civil_twilight` ,
+  `astronomical_twilight` 
+  )
+  SELECT `id`,
+  `source` ,
+  `TMC` ,
+  `severity` ,
+  `start_time` ,
+  `end_time` ,
+  `start_lat`,
+  `start_lng` ,
+  `Distance(mi)` ,
+  `Description`,
+  `airport_code` ,
+  `weather_timestamp` ,
+  `sunrise_sunset`,
+  `civil_twilight` ,
+  `astronomical_twilight` 
+  FROM master_table;
 
-
-INSERT INTO accidents2(
-				id,
-				`source`,
-				TMC,
-				severity,
-				start_time,
-				start_lat,
-				start_lng,
-				end_lat,
-				end_lng,
-				distance,
-				description,
-				airport_code,
-				weather_timestamp,
-				sunrise_sunset,
-				civil_twilight,
-				astronomical_twilight
-) SELECT id,
-				`source`,
-				TMC,
-				severity,
-				start_time,
-				start_lat,
-				start_lng,
-				end_lat,
-				end_lng,
-				distance,
-				description,
-				airport_code,
-				weather_timestamp,
-				sunrise_sunset,
-				civil_twilight,
-				astronomical_twilight
-FROM master_table;
