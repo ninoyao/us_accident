@@ -82,9 +82,9 @@ CREATE TABLE master_table(
 
 ALTER TABLE `accidents2`.`master_table` 
 ENGINE = InnoDB ;
-#LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/accident_0402.csv'
+LOAD DATA LOCAL INFILE '/Users/linh/Documents/Vanderbilt/Spring2020/DMS_5420/Project2/accident_0402_v2.csv'
 
-LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\us_accident\\accident_0402_v2.csv'
+#LOAD DATA INFILE 'C:\\Users\\ninoy\\Desktop\\VandyDS\\2020spring\\dbms\\us_accident\\accident_0402_v2.csv'
 INTO TABLE master_table
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
