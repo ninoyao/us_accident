@@ -61,24 +61,6 @@ CREATE TABLE master_table(
 `Astronomical_Twilight` VARCHAR(100)
 );
 
-/**
-`Amenity` BOOL , #SHOULD BE A BOOL VALUE
-`Bump` BOOL  , #SHOULD BE A BOOL VALUE
-`Crossing` BOOL  , #SHOULD BE A BOOL VALUE
-`Give_Way` BOOL  , #SHOULD BE A BOOL VALUE
-`Junction` BOOL  , #SHOULD BE A BOOL VALUE
-`No_Exit` BOOL  , #SHOULD BE A BOOL VALUE
-`Railway` BOOL  , #SHOULD BE A BOOL VALUE
-`Roundabout` BOOL  , #SHOULD BE A BOOL VALUE
-`Station` BOOL  , #SHOULD BE A BOOL VALUE
-`Stop` BOOL  , #SHOULD BE A BOOL VALUE
-`Traffic_Calming` BOOL  , #SHOULD BE A BOOL VALUE
-`Traffic_Signal` BOOL  , #SHOULD BE A BOOL VALUE
-`Turning_Loop` BOOL  , #SHOULD BE A BOOL VALUE
-
-
-**/
-
 
 ALTER TABLE `accidents2`.`master_table` 
 ENGINE = InnoDB ;
@@ -133,12 +115,7 @@ UPDATE master_table
 SET Turning_Loop = CASE WHEN Turning_Loop = 'False' THEN 0 ELSE 1 END;
 
 UPDATE master_table SET zipcode = TRIM(BOTH '"' FROM zipcode);
-/**
-DELETE m1 FROM master_table m1
-INNER JOIN master_table m2 
-WHERE
-    m1.zipcode = m2.zipcode;
-**/
+
 
 
 -- -----------------------------------------------------
