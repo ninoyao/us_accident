@@ -61,6 +61,24 @@ CREATE TABLE master_table(
 `Astronomical_Twilight` VARCHAR(100)
 );
 
+/**
+`Amenity` BOOL , #SHOULD BE A BOOL VALUE
+`Bump` BOOL  , #SHOULD BE A BOOL VALUE
+`Crossing` BOOL  , #SHOULD BE A BOOL VALUE
+`Give_Way` BOOL  , #SHOULD BE A BOOL VALUE
+`Junction` BOOL  , #SHOULD BE A BOOL VALUE
+`No_Exit` BOOL  , #SHOULD BE A BOOL VALUE
+`Railway` BOOL  , #SHOULD BE A BOOL VALUE
+`Roundabout` BOOL  , #SHOULD BE A BOOL VALUE
+`Station` BOOL  , #SHOULD BE A BOOL VALUE
+`Stop` BOOL  , #SHOULD BE A BOOL VALUE
+`Traffic_Calming` BOOL  , #SHOULD BE A BOOL VALUE
+`Traffic_Signal` BOOL  , #SHOULD BE A BOOL VALUE
+`Turning_Loop` BOOL  , #SHOULD BE A BOOL VALUE
+
+
+**/
+
 
 ALTER TABLE `accidents2`.`master_table` 
 ENGINE = InnoDB ;
@@ -115,6 +133,24 @@ UPDATE master_table
 SET Turning_Loop = CASE WHEN Turning_Loop = 'False' THEN 0 ELSE 1 END;
 
 UPDATE master_table SET zipcode = TRIM(BOTH '"' FROM zipcode);
+UPDATE master_table SET ID = TRIM(BOTH '"' FROM ID);
+UPDATE master_table SET `Source` = TRIM(BOTH '"' FROM `Source`);
+UPDATE master_table SET Street = TRIM(BOTH '"' FROM Street);
+UPDATE master_table SET Side = TRIM(BOTH '"' FROM Side);
+UPDATE master_table SET City = TRIM(BOTH '"' FROM City);
+UPDATE master_table SET County = TRIM(BOTH '"' FROM Country);
+UPDATE master_table SET State = TRIM(BOTH '"' FROM State);
+UPDATE master_table SET Country = TRIM(BOTH '"' FROM Country);
+UPDATE master_table SET Timezone = TRIM(BOTH '"' FROM Timezone);
+UPDATE master_table SET Airport_Code = TRIM(BOTH '"' FROM Airport_Code);
+UPDATE master_table SET Wind_Direction = TRIM(BOTH '"' FROM Wind_Direction);
+UPDATE master_table SET Weather_Condition = TRIM(BOTH '"' FROM Weather_Condition);
+UPDATE master_table SET Sunrise_Sunset = TRIM(BOTH '"' FROM Sunrise_Sunset);
+UPDATE master_table SET Civil_Twilight = TRIM(BOTH '"' FROM Civil_Twilight);
+UPDATE master_table SET Nautical_Twilight = TRIM(BOTH '"' FROM Nautical_Twilight);
+UPDATE master_table SET Astronomical_Twilight = TRIM(BOTH '"' FROM Astronomical_Twilight);
+
+SELECT * FROM master_table LIMIT 1000;
 
 
 
@@ -175,11 +211,11 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Location_POI_start` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `accidents2`.`Enviornment`
+-- Table `accidents2`.`Environment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents2`.`Enviornment` ;
+DROP TABLE IF EXISTS `accidents2`.`Environment` ;
 
-CREATE TABLE IF NOT EXISTS `accidents2`.`Enviornment` (
+CREATE TABLE IF NOT EXISTS `accidents2`.`Environment` (
   `airport_code` VARCHAR(45) NOT NULL,
   `weather_timestamp` DATETIME NOT NULL,
   `temperature` DECIMAL(5,2) NULL,
@@ -216,15 +252,15 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
   `astronomical_twilight` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Accidents_Location_POI1_idx` (`start_lat` ASC, `start_lng` ASC),
-  INDEX `fk_Accidents_Enviornment1_idx` (`airport_code` ASC, `weather_timestamp` ASC),
+  INDEX `fk_Accidents_Environment1_idx` (`airport_code` ASC, `weather_timestamp` ASC),
   CONSTRAINT `fk_Accidents_Location_POI1`
     FOREIGN KEY (`start_lat` , `start_lng`)
     REFERENCES `accidents2`.`Location_POI_start` (`start_lat` , `start_lng`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Accidents_Enviornment1`
+  CONSTRAINT `fk_Accidents_Environment1`
     FOREIGN KEY (`airport_code` , `weather_timestamp`)
-    REFERENCES `accidents2`.`Enviornment` (`airport_code` , `weather_timestamp`)
+    REFERENCES `accidents2`.`Environment` (`airport_code` , `weather_timestamp`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -240,24 +276,6 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 -- Inserting data into tables
 -- -----------------------------------------------------
-
-#UPDATE master_table
-#SET zipcode = LPAD(zipcode, 5,'-');
-
-#SELECT  DISTINCT zipcode FROM master_table;
-
-#SELECT  count(DISTINCT zipcode,city,
-			#	county,
-			#	timezone,
-			#	airport_code) FROM master_table;
-
-#SELECT  DISTINCT (zipcode),
-#				city,
-#				county,
-#				timezone,
-#				airport_code
-#FROM master_table WHERE zipcode IS NOT NULL;
-
 
 INSERT INTO Location_zip(
 				zipcode,
@@ -326,7 +344,7 @@ INSERT INTO Location_POI_start(
 FROM master_table;
 
 
-INSERT INTO enviornment(
+INSERT INTO Environment(
 				airport_code,
 				weather_timestamp,
 				temperature,
