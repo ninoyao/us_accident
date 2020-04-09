@@ -150,9 +150,68 @@ UPDATE master_table SET Civil_Twilight = TRIM(BOTH '"' FROM Civil_Twilight);
 UPDATE master_table SET Nautical_Twilight = TRIM(BOTH '"' FROM Nautical_Twilight);
 UPDATE master_table SET Astronomical_Twilight = TRIM(BOTH '"' FROM Astronomical_Twilight);
 
-SELECT * FROM master_table LIMIT 1000;
+UPDATE master_table SET ID=TRIM(LEADING 'A-' FROM ID); 
 
 
+
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'WNW','NW')  WHERE wind_direction='WNW';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'SSW','SW')  WHERE wind_direction='SSW';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'ESE','SE')  WHERE wind_direction='ESE';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'SSE','SE')  WHERE wind_direction='SSE';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'South','S')  WHERE wind_direction='South';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'West','W')  WHERE wind_direction='West';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'WSW','SW')  WHERE wind_direction='WSW';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'ENE','NE')  WHERE wind_direction='ENE';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'NNE','NE')  WHERE wind_direction='NNE';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'NNW','NW')  WHERE wind_direction='NNW';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'East','E')  WHERE wind_direction='East';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'Variable','VAR')  WHERE wind_direction='Variable';
+UPDATE master_table SET wind_direction = REPLACE (wind_direction,'North','N')  WHERE wind_direction='North';
+
+
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Cloudy / Windy','Cloudy')  WHERE Weather_Condition='Cloudy / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Snow / Windy','Light Snow')  WHERE Weather_Condition='Light Snow / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Rain / Windy','Light Rain')  WHERE Weather_Condition='Light Rain / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Heavy Snow / Windy','Heavy Snow')  WHERE Weather_Condition='Heavy Snow / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Mostly Cloudy / Windy','Mostly Cloudy')  WHERE Weather_Condition='Mostly Cloudy / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Wintry Mix / Windy','Wintry Mix')  WHERE Weather_Condition='Wintry Mix / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Partly Cloudy / Windy','Partly Cloudy')  WHERE Weather_Condition='Partly Cloudy / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Fair / Windy','Fair')  WHERE Weather_Condition='Fair / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Drizzle / Windy','Light Drizzle')  WHERE Weather_Condition='Light Drizzle / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Thunder in the Vicinity','Thunder')  WHERE Weather_Condition='Thunder in the Vicinity';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Patches of Fog','Fog')  WHERE Weather_Condition='Patches of Fog';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Shallow Fog','Fog')  WHERE Weather_Condition='Shallow Fog';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Rain with Thunder','Light Rain')  WHERE Weather_Condition='Light Rain with Thunder';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Heavy Rain / Windy','Heavy Rain')  WHERE Weather_Condition='Heavy Rain / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Rain / Windy','Rain')  WHERE Weather_Condition='Rain / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'T-Storm / Windy','T-Storms')  WHERE Weather_Condition='T-Storm / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Heavy T-Storm / Windy','Heavy T-Storms')  WHERE Weather_Condition='Heavy T-Storm / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Haze / Windy','Haze')  WHERE Weather_Condition='Haze / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Showers in the Vicinity','Showers')  WHERE Weather_Condition='Showers in the Vicinity';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Thunderstorms and Rain','Light T-Storms')  WHERE Weather_Condition='Light Thunderstorms and Rain';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Thunderstorms and Rain','T-Storms')  WHERE Weather_Condition='Thunderstorms and Rain';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Heavy Thunderstorms and Rain','Heavy T-Storms')  WHERE Weather_Condition='Heavy Thunderstorms and Rain';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Thunderstorm','T-Storms')  WHERE Weather_Condition='Thunderstorm';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Blowing Snow','Snow')  WHERE Weather_Condition='Blowing Snow';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Small Hail','Light Hail')  WHERE Weather_Condition='Small Hail';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Smoke / Windy','Smoke')  WHERE Weather_Condition='Smoke / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Freezing Rain / Windy','Freezing Rain')  WHERE Weather_Condition='Light Freezing Rain / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Snow / Windy','Snow')  WHERE Weather_Condition='Snow / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Snow Grains','Light Snow')  WHERE Weather_Condition='Light Snow Grains';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Fog / Windy','Fog')  WHERE Weather_Condition='Fog / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Rain Shower / Windy','Light Rain')  WHERE Weather_Condition='Light Rain Shower / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Squalls / Windy','Rain')  WHERE Weather_Condition='Squalls / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Thunder / Windy','Thunder')  WHERE Weather_Condition='Thunder / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Blowing Dust / Windy','Blowing Dust')  WHERE Weather_Condition='Blowing Dust / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Drizzle / Windy','Drizzle')  WHERE Weather_Condition='Drizzle / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Partial Fog','Fog')  WHERE Weather_Condition='Partial Fog';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Sand / Dust Whirlwinds / Windy','Sand / Dust Whirlwinds')  WHERE Weather_Condition='Sand / Dust Whirlwinds / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Blowing Snow / Windy','Blowing Snow')  WHERE Weather_Condition='Blowing Snow / Windy';
+UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Snow and Sleet / Windy','Rain')  WHERE Weather_Condition='Light Snow and Sleet / Windy';
+
+
+
+SELECT DISTINCT(tmc) FROM master_table LIMIT 100;
 
 -- -----------------------------------------------------
 -- Table new tables
@@ -235,7 +294,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `accidents2`.`Accidents` ;
 
 CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
-  `id` VARCHAR(50) ,
+  `id` BIGINT AUTO_INCREMENT NOT NULL,
   `source` VARCHAR(20) NULL,
   `TMC` INT NULL,
   `severity` INT NULL,
@@ -248,6 +307,7 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
   `airport_code` VARCHAR(45) NOT NULL,
   `weather_timestamp` DATETIME NULL,
   `sunrise_sunset` VARCHAR(45) NULL,
+  `nautical_twilight`VARCHAR(45) NULL,
   `civil_twilight` VARCHAR(45) NULL,
   `astronomical_twilight` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
@@ -381,6 +441,7 @@ INSERT INTO accidents(
   `weather_timestamp` ,
   `sunrise_sunset`,
   `civil_twilight` ,
+ `nautical_twilight`,
   `astronomical_twilight` 
   )
   SELECT `id`,
@@ -397,6 +458,13 @@ INSERT INTO accidents(
   `weather_timestamp` ,
   `sunrise_sunset`,
   `civil_twilight` ,
+ `nautical_twilight`,
   `astronomical_twilight` 
   FROM master_table;
 
+USE accidents2;
+SELECT* FROM master_table LIMIT 10;
+SELECT* FROM accidents LIMIT 10;
+SELECT* FROM environment LIMIT 10;
+SELECT* FROM location_POI_start LIMIT 10;
+SELECT* FROM location_zip LIMIT 10;
