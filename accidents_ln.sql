@@ -265,8 +265,8 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Location_POI_start` (
   CONSTRAINT `fk_POI_Location_zip`
     FOREIGN KEY (`zipcode`)
     REFERENCES `accidents2`.`Location_zip` (`zipcode`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -316,13 +316,13 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
   CONSTRAINT `fk_Accidents_Location_POI1`
     FOREIGN KEY (`start_lat` , `start_lng`)
     REFERENCES `accidents2`.`Location_POI_start` (`start_lat` , `start_lng`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Accidents_Environment1`
     FOREIGN KEY (`airport_code` , `weather_timestamp`)
     REFERENCES `accidents2`.`Environment` (`airport_code` , `weather_timestamp`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
