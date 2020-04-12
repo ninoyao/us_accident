@@ -98,7 +98,8 @@ CREATE TABLE zip_audit (
 	county VARCHAR(20),
 	timezone VARCHAR(20),
 	airport_code VARCHAR(20),
-	date_added DATETIME DEFAULT NULL
+	date_added DATETIME DEFAULT NULL,
+    date_dropped DATETIME DEFAULT NULL
 );
 
 DROP TRIGGER IF EXISTS zipcode_after_insert;
@@ -114,7 +115,8 @@ BEGIN
 
 END //
 DELIMITER ;
-/**
+
+
 DROP TRIGGER IF EXISTS zipcode_after_delete;
 
 DELIMITER //
@@ -123,12 +125,11 @@ AFTER DELETE
 ON Location_zip
 FOR EACH ROW
 BEGIN
-	INSERT INTO zip_audit (zipcode,city,county,timezone,airport_code, date_added)
-	VALUES (OLD.zipcode, OLD.city, OLD.county, OLD.timezone, OLD.airport_code,NULL, current_date());
+	INSERT INTO zip_audit (zipcode,city,county,timezone,airport_code, date_dropped)
+	VALUES (OLD.zipcode, OLD.city, OLD.county, OLD.timezone, OLD.airport_code, current_date());
 
 END //
 DELIMITER ;
-**/
 
 -- -----------------------------------------------------
 -- Create accidents audit table & trigger

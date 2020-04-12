@@ -291,7 +291,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `accidents2`.`Accidents`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `accidents2`.`Accidents` ;
+DROP TABLE IF EXISTS `accidents2`.`accidents`;
 
 CREATE TABLE IF NOT EXISTS `accidents2`.`Accidents` (
   `id` BIGINT AUTO_INCREMENT NOT NULL,
