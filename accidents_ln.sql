@@ -208,7 +208,8 @@ UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Partial 
 UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Sand / Dust Whirlwinds / Windy','Sand / Dust Whirlwinds')  WHERE Weather_Condition='Sand / Dust Whirlwinds / Windy';
 UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Blowing Snow / Windy','Blowing Snow')  WHERE Weather_Condition='Blowing Snow / Windy';
 UPDATE master_table SET Weather_Condition = REPLACE (Weather_Condition,'Light Snow and Sleet / Windy','Rain')  WHERE Weather_Condition='Light Snow and Sleet / Windy';
-
+# THIS 
+DELETE FROM master_table WHERE Zipcode = '20815-3704';
 
 
 SELECT DISTINCT(tmc) FROM master_table LIMIT 100;
@@ -230,6 +231,7 @@ CREATE TABLE IF NOT EXISTS `accidents2`.`Location_zip` (
   `zipcode` VARCHAR(15) NOT NULL,
   `city` VARCHAR(45) NULL,
   `county` VARCHAR(45) NULL,
+  `State` VARCHAR(10),
   `timezone` VARCHAR(45) NULL,
   `airport_code` VARCHAR(45) NULL,
   PRIMARY KEY (`zipcode`))
@@ -341,9 +343,10 @@ INSERT INTO Location_zip(
 				zipcode,
 				city,
 				county,
+                state ,
 				timezone,
 				airport_code
-) SELECT DISTINCT(zipcode), city, county, timezone, airport_code
+) SELECT DISTINCT(zipcode), city, county, state,timezone, airport_code
 FROM master_table;
 
 SELECT DISTINCT start_lat, start_lng,
