@@ -87,29 +87,6 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
--- Create accidents_loc & zip join
--- -----------------------------------------------------
-DROP VIEW IF EXISTS accidents_loc_zip;
-CREATE VIEW accidents_loc_zip AS
-SELECT * FROM accidents_loc a
-INNER JOIN location_zip USING(zipcode,airport_code) 
-INNER JOIN environment USING(weather_timestamp,airport_code); ; 
-
--- -----------------------------------------------------
--- Create corresponding procedure to call
--- joined accidents_loc_zip data
--- -----------------------------------------------------
-DROP PROCEDURE IF EXISTS get_accidents_loc_zip;
-DELIMITER //
- 
-CREATE PROCEDURE get_accidents_loc_zip()
-BEGIN
-    SELECT *  FROM accidents_loc_zip;
-END //
- 
-DELIMITER ;
-
--- -----------------------------------------------------
 -- Create zipcode audit table & trigger
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS zip_audit;
@@ -119,6 +96,7 @@ CREATE TABLE zip_audit (
 	zipcode INT,
 	city VARCHAR(20),
 	county VARCHAR(20),
+    State varchar(10),
 	timezone VARCHAR(20),
 	airport_code VARCHAR(20),
 	date_added DATETIME DEFAULT NULL,
@@ -133,8 +111,8 @@ AFTER INSERT
 ON Location_zip
 FOR EACH ROW
 BEGIN
-	INSERT INTO zip_audit (zipcode,city,county,timezone,airport_code, date_added)
-	VALUES (NEW.zipcode, NEW.city, NEW.county, NEW.timezone, NEW.airport_code,current_date());
+	INSERT INTO zip_audit (zipcode,city,county,State,timezone,airport_code, date_added,date_dropped)
+	VALUES (NEW.zipcode, NEW.city, NEW.county, NEW.State, NEW.timezone, NEW.airport_code,current_date(),null);
 
 END //
 DELIMITER ;
@@ -148,8 +126,8 @@ AFTER DELETE
 ON Location_zip
 FOR EACH ROW
 BEGIN
-	INSERT INTO zip_audit (zipcode,city,county,timezone,airport_code, date_dropped)
-	VALUES (OLD.zipcode, OLD.city, OLD.county, OLD.timezone, OLD.airport_code, current_date());
+	INSERT INTO zip_audit (zipcode,city,county,State,timezone,airport_code, date_added, date_dropped)
+	VALUES (OLD.zipcode, OLD.city, OLD.county, OLD.State,OLD.timezone, OLD.airport_code,NULL , current_date());
 
 END //
 DELIMITER ;
