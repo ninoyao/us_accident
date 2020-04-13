@@ -87,6 +87,29 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Create accidents_loc & zip join
+-- -----------------------------------------------------
+DROP VIEW IF EXISTS accidents_loc_zip;
+CREATE VIEW accidents_loc_zip AS
+SELECT * FROM accidents_loc a
+INNER JOIN location_zip USING(zipcode,airport_code) 
+INNER JOIN environment USING(weather_timestamp,airport_code); ; 
+
+-- -----------------------------------------------------
+-- Create corresponding procedure to call
+-- joined accidents_loc_zip data
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS get_accidents_loc_zip;
+DELIMITER //
+ 
+CREATE PROCEDURE get_accidents_loc_zip()
+BEGIN
+    SELECT *  FROM accidents_loc_zip;
+END //
+ 
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Create zipcode audit table & trigger
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS zip_audit;
